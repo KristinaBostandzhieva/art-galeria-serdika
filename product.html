@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Творба — Галерия Сердика</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23f7f5f1'/><text x='10' y='82' font-family='Georgia,serif' font-size='88' font-style='italic' fill='%231a1814'>С</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --white:#fff;--off:#f7f5f1;--border:#d8d2c8;
+      --text:#1a1814;--muted:#7a746c;--red:#c8402a;--black:#111110;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--white);color:var(--text);font-family:'Montserrat',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 4rem;height:72px;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(8px)}
+    .nav-logo{display:flex;align-items:center;text-decoration:none}
+    .nav-logo img{height:46px;width:auto;object-fit:contain}
+    .nav-links{display:flex;gap:2.5rem;list-style:none}
+    .nav-links a{color:var(--text);text-decoration:none;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;opacity:.6;transition:opacity .2s,color .2s}
+    .nav-links a:hover{opacity:1;color:var(--red)}
+    .nav-cta{color:var(--white)!important;opacity:1!important;background:var(--text);padding:.55rem 1.5rem;transition:background .2s!important}
+    .nav-cta:hover{background:var(--red)!important}
+    .nav-cart{position:relative;background:none;border:none;cursor:pointer;display:flex;align-items:center;padding:.4rem .6rem;color:var(--text);transition:color .2s}
+    .nav-cart:hover{color:var(--red)}
+    .nav-cart svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5}
+    .cart-badge{position:absolute;top:0;right:0;width:16px;height:16px;border-radius:50%;background:var(--red);color:#fff;font-size:.55rem;font-weight:600;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0);transition:.2s}
+    .cart-badge.show{opacity:1;transform:scale(1)}
+    .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+    .burger span{display:block;width:24px;height:1.5px;background:var(--text)}
+
+    /* BREADCRUMB */
+    .breadcrumb{padding:100px 4rem 0;display:flex;align-items:center;gap:.5rem}
+    .breadcrumb a{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--red)}
+    .breadcrumb span{color:var(--border);font-size:.7rem}
+    .breadcrumb .current{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text)}
+
+    /* PRODUCT LAYOUT */
+    .product-wrap{display:grid;grid-template-columns:1fr 420px;gap:5rem;padding:2.5rem 4rem 6rem;align-items:start}
+
+    /* Image column */
+    .product-images{}
+    .main-img-wrap{
+      position:relative;overflow:hidden;
+      background:var(--off);border:1px solid var(--border);
+      height:88vh; cursor:crosshair;
+    }
+    .main-img-wrap img{
+      width:100%;height:100%;object-fit:cover;display:block;
+      transition:transform .15s ease, transform-origin 0s;
+      transform-origin: center center;
+    }
+    /* Zoom hint overlay */
+    .zoom-btn{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.0);
+      border:none;cursor:zoom-in;width:100%;
+      opacity:0;transition:opacity .25s;
+    }
+    .zoom-btn span{
+      background:rgba(0,0,0,.45);color:#fff;
+      padding:.5rem 1rem;font-family:'Montserrat',sans-serif;
+      font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+    }
+    .main-img-wrap:hover .zoom-btn{opacity:1}
+    /* Lightbox */
+    #lightbox{
+      display:none;position:fixed;inset:0;z-index:500;
+      background:rgba(0,0,0,.92);
+      align-items:center;justify-content:center;cursor:zoom-out;
+    }
+    #lightbox.open{display:flex}
+    #lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;box-shadow:0 8px 60px rgba(0,0,0,.5)}
+    #lightboxClose{
+      position:absolute;top:1.5rem;right:1.5rem;
+      background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;opacity:.7;transition:opacity .2s;
+    }
+    #lightboxClose:hover{opacity:1}
+    .thumbnails{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:.8rem}
+    .thumb{overflow:hidden;border:1px solid var(--border);cursor:pointer;aspect-ratio:1/1;background:var(--off)}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s,opacity .2s}
+    .thumb:hover img{transform:scale(1.06)}
+    .thumb.active{border-color:var(--text)}
+
+    /* Info column */
+    .product-info{position:sticky;top:90px}
+    .product-badge{display:inline-block;background:var(--red);color:#fff;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;padding:.3rem .8rem;margin-bottom:1.2rem;font-weight:500}
+    .product-cat{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--red);margin-bottom:.8rem}
+    .product-name{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;line-height:1.1;color:var(--text);margin-bottom:.5rem}
+    .product-artist{font-size:.85rem;color:var(--muted);margin-bottom:1.8rem}
+    .product-divider{width:36px;height:1px;background:var(--border);margin-bottom:1.8rem}
+    .product-price{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--text);margin-bottom:.4rem}
+    .product-price-note{font-size:.72rem;color:var(--muted);margin-bottom:2rem}
+    .product-desc{font-size:.84rem;color:var(--muted);line-height:1.9;margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+
+    /* Specs */
+    .product-specs{display:flex;flex-direction:column;gap:.8rem;margin-bottom:2rem}
+    .spec-row{display:flex;justify-content:space-between;font-size:.8rem}
+    .spec-label{color:var(--muted);letter-spacing:.08em}
+    .spec-val{color:var(--text);font-weight:400}
+
+    /* Add to cart */
+    .product-add{width:100%;padding:1.1rem;font-family:'Montserrat',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;background:var(--text);color:#fff;border:none;cursor:pointer;transition:background .2s;margin-bottom:.8rem}
+    .product-add:hover{background:var(--red)}
+    .product-add.added{background:var(--red)}
+    .product-inquiry{width:100%;padding:1rem;font-family:'Montserrat',sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;background:transparent;color:var(--text);border:1.5px solid var(--border);cursor:pointer;transition:border-color .2s,color .2s;text-decoration:none;display:block;text-align:center}
+    .product-inquiry:hover{border-color:var(--red);color:var(--red)}
+
+    .product-guarantee{display:flex;align-items:center;gap:.6rem;margin-top:1.2rem;font-size:.72rem;color:var(--muted)}
+    .product-guarantee svg{flex-shrink:0;stroke:var(--muted)}
+
+    /* RELATED */
+    .related{padding:5rem 4rem;background:var(--off);border-top:1px solid var(--border)}
+    .related-label{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--red);margin-bottom:.8rem;display:block}
+    .related-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--text);margin-bottom:2.5rem}
+    .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .related-card{background:var(--white);border:1px solid var(--border);cursor:pointer;transition:box-shadow .25s,transform .25s;text-decoration:none;display:block}
+    .related-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08);transform:translateY(-3px)}
+    .related-img{aspect-ratio:3/4;overflow:hidden}
+    .related-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+    .related-card:hover .related-img img{transform:scale(1.05)}
+    .related-info{padding:1rem 1.1rem 1.3rem}
+    .related-cat{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:.3rem}
+    .related-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--text);line-height:1.2;margin-bottom:.2rem}
+    .related-price{font-size:.8rem;color:var(--muted)}
+
+    /* CART DRAWER (same as index) */
+    .cart-overlay{position:fixed;inset:0;z-index:200;background:rgba(26,24,20,.4);opacity:0;pointer-events:none;transition:opacity .3s}
+    .cart-overlay.open{opacity:1;pointer-events:all}
+    .cart-drawer{position:fixed;top:0;right:0;bottom:0;z-index:201;width:min(420px,100vw);background:var(--white);box-shadow:-4px 0 40px rgba(0,0,0,.12);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+    .cart-drawer.open{transform:translateX(0)}
+    .cart-header{display:flex;align-items:center;justify-content:space-between;padding:1.6rem 1.8rem;border-bottom:1px solid var(--border)}
+    .cart-header h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400}
+    .cart-close{background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--muted);transition:color .2s;line-height:1}
+    .cart-close:hover{color:var(--text)}
+    .cart-items{flex:1;overflow-y:auto;padding:1.2rem 1.8rem}
+    .cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;color:var(--muted)}
+    .cart-empty svg{width:48px;height:48px;stroke:var(--border);fill:none;stroke-width:1}
+    .cart-empty p{font-size:.82rem}
+    .cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border)}
+    .cart-item-info{flex:1}
+    .cart-item-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--text);line-height:1.2;margin-bottom:.2rem}
+    .cart-item-artist{font-size:.72rem;color:var(--muted);margin-bottom:.5rem}
+    .cart-item-row{display:flex;align-items:center;gap:.8rem}
+    .cart-item-price{font-size:.82rem;font-weight:500;color:var(--text)}
+    .qty-ctrl{display:flex;align-items:center;gap:.5rem}
+    .qty-btn{width:24px;height:24px;border:1px solid var(--border);background:none;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;color:var(--text);transition:border-color .2s,color .2s}
+    .qty-btn:hover{border-color:var(--red);color:var(--red)}
+    .qty-val{font-size:.8rem;min-width:18px;text-align:center}
+    .cart-item-remove{background:none;border:none;cursor:pointer;font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+    .cart-item-remove:hover{color:var(--red)}
+    .cart-footer-bar{padding:1.4rem 1.8rem;border-top:1px solid var(--border)}
+    .cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem}
+    .cart-total-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+    .cart-total-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--text)}
+    .cart-checkout-btn{width:100%;padding:1rem;font-family:'Montserrat',sans-serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;background:var(--text);color:#fff;border:none;cursor:pointer;transition:background .22s}
+    .cart-checkout-btn:hover{background:var(--red)}
+
+    @media(max-width:900px){
+      nav{padding:0 1.5rem}
+      .nav-links{display:none}
+      .burger{display:flex}
+      .breadcrumb{padding:90px 1.5rem 0}
+      .product-wrap{grid-template-columns:1fr;gap:2rem;padding:2rem 1.5rem 4rem}
+      .product-info{position:static}
+      .thumbnails{grid-template-columns:repeat(3,1fr)}
+      .related{padding:3rem 1.5rem}
+      .related-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:500px){.related-grid{grid-template-columns:1fr}}
+
+    .mobile-nav{display:none;position:fixed;inset:0;z-index:200;background:var(--white);flex-direction:column;align-items:center;justify-content:center;gap:2.2rem}
+    .mobile-nav.open{display:flex}
+    .mobile-nav a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--text);text-decoration:none;transition:color .2s}
+    .mobile-nav a:hover{color:var(--red)}
+    .mobile-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--text);font-size:1.8rem;cursor:pointer}
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="Галерия Сердика" onerror="this.src='footer.png'"/>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#exhibitions">Изложби</a></li>
+      <li><a href="index.html#shop">Магазин</a></li>
+      <li><a href="index.html#about">За Нас</a></li>
+      <li><a href="index.html#artists">Художници</a></li>
+      <li><a href="index.html#visit">Посещение</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Контакт</a></li>
+    </ul>
+    <button class="nav-cart" id="cartBtn">
+      <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-close" id="mobileClose">✕</button>
+    <a href="index.html#exhibitions">Изложби</a>
+    <a href="index.html#shop">Магазин</a>
+    <a href="index.html#about">За Нас</a>
+    <a href="index.html#artists">Художници</a>
+    <a href="index.html#visit">Посещение</a>
+    <a href="index.html#contact">Контакт</a>
+  </div>
+
+  <div class="breadcrumb">
+    <a href="index.html">Начало</a>
+    <span>/</span>
+    <a href="index.html#shop">Магазин</a>
+    <span>/</span>
+    <span class="current" id="bcName">—</span>
+  </div>
+
+  <div class="product-wrap">
+    <!-- IMAGES -->
+    <div class="product-images">
+      <div class="main-img-wrap" onclick="openLightbox()">
+        <img id="mainImg" src="" alt=""/>
+      </div>
+      <div class="thumbnails" id="thumbs"></div>
+    </div>
+
+    <!-- INFO -->
+    <div class="product-info">
+      <span class="product-badge" id="prodBadge" style="display:none"></span>
+      <div class="product-cat"  id="prodCat"></div>
+      <h1  class="product-name" id="prodName"></h1>
+      <div class="product-artist" id="prodArtist"></div>
+      <div class="product-divider"></div>
+      <div class="product-price" id="prodPrice"></div>
+      <div class="product-price-note">Цената включва сертификат за автентичност.<br>Безплатна доставка в рамките на България.</div>
+      <div class="product-desc" id="prodDesc">
+        Оригинална творба от постоянната колекция на Галерия Сердика.
+        Всяка творба идва с подпис на художника, сертификат за автентичност
+        и подробна документация за произход.
+      </div>
+      <div class="product-specs" id="prodSpecs"></div>
+      <button class="product-add" id="prodAdd" onclick="addProduct()">Добави в Кошницата</button>
+      <a href="index.html#contact" class="product-inquiry">Запитай за тази творба</a>
+      <div class="product-guarantee">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Гарантирана автентичност · Връщане в 14 дни
+      </div>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="related">
+    <span class="related-label">От Колекцията</span>
+    <h2 class="related-title">Може да харесате</h2>
+    <div class="related-grid" id="relatedGrid"></div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <button id="lightboxClose" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt=""/>
+  </div>
+
+  <!-- CART -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h2>Кошница</h2>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <p>Кошницата е празна</p>
+      </div>
+    </div>
+    <div id="cartFooterEl" style="display:none" class="cart-footer-bar">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Общо</span>
+        <span class="cart-total-val" id="cartTotal">0 лв.</span>
+      </div>
+      <button class="cart-checkout-btn" onclick="window.location.href='index.html#contact'">Към Плащане</button>
+    </div>
+  </div>
+
+  <script>
+    // Cursor-zoom on main image
+    (function() {
+      const wrap = document.querySelector('.main-img-wrap');
+      const img  = document.getElementById('mainImg');
+      if (!wrap || !img) return;
+      wrap.addEventListener('mousemove', e => {
+        const r = wrap.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width  * 100).toFixed(2);
+        const y = ((e.clientY - r.top)  / r.height * 100).toFixed(2);
+        img.style.transformOrigin = `${x}% ${y}%`;
+        img.style.transform = 'scale(1.6)';
+      });
+      wrap.addEventListener('mouseleave', () => {
+        img.style.transform = '';
+        img.style.transformOrigin = 'center center';
+      });
+    })();
+
+    // Lightbox
+    function openLightbox() {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightboxImg').src = document.getElementById('mainImg').src;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // Read URL params
+    const p = new URLSearchParams(location.search);
+    const name   = p.get('name')   || 'Творба';
+    const artist = p.get('artist') || '';
+    const price  = parseInt(p.get('price') || '0');
+    const imgSrc = p.get('img')    || 'https://picsum.photos/seed/shop-1/800/1000';
+    const cat    = p.get('cat')    || '';
+    const badge  = p.get('badge')  || '';
+
+    // Extract picsum seed to generate detail shots
+    const seedMatch = imgSrc.match(/seed\/([^/]+)\//);
+    const seed = seedMatch ? seedMatch[1] : 'art1';
+
+    // Populate
+    document.title = name + ' — Галерия Сердика';
+    document.getElementById('bcName').textContent    = name;
+    document.getElementById('prodName').textContent  = name;
+    document.getElementById('prodArtist').textContent= artist;
+    document.getElementById('prodCat').textContent   = cat;
+    document.getElementById('prodPrice').textContent = price.toLocaleString('bg-BG') + ' лв.';
+    if (badge) {
+      const b = document.getElementById('prodBadge');
+      b.textContent = badge; b.style.display = 'inline-block';
+    }
+
+    // Main image
+    const mainImgEl = document.getElementById('mainImg');
+    const mainSrc = imgSrc.replace(/\/\d+\/\d+$/, '/800/1000');
+    mainImgEl.src = mainSrc;
+
+    // Thumbnails — main + 3 detail shots
+    const shots = [
+      mainSrc,
+      `https://picsum.photos/seed/${seed}-d1/400/500`,
+      `https://picsum.photos/seed/${seed}-d2/400/500`,
+      `https://picsum.photos/seed/${seed}-d3/400/500`,
+    ];
+    const thumbsEl = document.getElementById('thumbs');
+    shots.forEach((src, i) => {
+      const div = document.createElement('div');
+      div.className = 'thumb' + (i === 0 ? ' active' : '');
+      div.innerHTML = `<img src="${src}" alt=""/>`;
+      div.addEventListener('click', () => {
+        mainImgEl.src = src;
+        document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+        div.classList.add('active');
+      });
+      thumbsEl.appendChild(div);
+    });
+
+    // Specs
+    const specs = [
+      ['Техника', cat.includes('Принт') ? 'Гичи принт' : cat.includes('Фото') ? 'Аналогова фотография' : 'Оригинална картина'],
+      ['Размери', '60 × 80 см'],
+      ['Година', '2024'],
+      ['Наличност', badge === 'Лимитиран' ? 'Лимитиран тираж' : '1 бр.'],
+    ];
+    const specsEl = document.getElementById('prodSpecs');
+    specs.forEach(([label, val]) => {
+      specsEl.innerHTML += `<div class="spec-row"><span class="spec-label">${label}</span><span class="spec-val">${val}</span></div>`;
+    });
+
+    // Related works
+    const relatedData = [
+      { seed:'shop-2', name:'Слоеве — Синя серия', artist:'Десислава Илиева', price:280, cat:'Принт' },
+      { seed:'shop-3', name:'Женски Пазар, 1998',  artist:'Ива Стоянова',     price:350, cat:'Фотография' },
+      { seed:'shop-5', name:'Светлина след Дъжда', artist:'Мариана Коларова', price:950, cat:'Живопис' },
+      { seed:'shop-7', name:'Ехо II',               artist:'Кирил Нейков',    price:1650, cat:'Живопис' },
+    ].filter(r => r.name !== name).slice(0, 3);
+
+    const relGrid = document.getElementById('relatedGrid');
+    relatedData.forEach(r => {
+      const rp = new URLSearchParams({ name:r.name, artist:r.artist, price:r.price, img:`https://picsum.photos/seed/${r.seed}/400/533`, cat:r.cat });
+      relGrid.innerHTML += `
+        <a class="related-card" href="product.html?${rp}">
+          <div class="related-img"><img src="https://picsum.photos/seed/${r.seed}/400/533" alt="" loading="lazy"/></div>
+          <div class="related-info">
+            <div class="related-cat">${r.cat}</div>
+            <div class="related-name">${r.name}</div>
+            <div class="related-price">${r.price.toLocaleString('bg-BG')} лв.</div>
+          </div>
+        </a>`;
+    });
+
+    // CART
+    let cart = JSON.parse(localStorage.getItem('serdika-cart') || '[]');
+
+    const cartBtn     = document.getElementById('cartBtn');
+    const cartBadge   = document.getElementById('cartBadge');
+    const cartDrawer  = document.getElementById('cartDrawer');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartClose   = document.getElementById('cartClose');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartEmptyEl = document.getElementById('cartEmpty');
+    const cartFooterEl= document.getElementById('cartFooterEl');
+    const cartTotalEl = document.getElementById('cartTotal');
+
+    function openCart()  { cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeCart() { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); document.body.style.overflow=''; }
+    function saveCart()  { localStorage.setItem('serdika-cart', JSON.stringify(cart)); }
+
+    cartBtn.addEventListener('click', openCart);
+    cartClose.addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    function addProduct() {
+      const existing = cart.find(i => i.name === name);
+      if (existing) { existing.qty++; } else { cart.push({ name, artist, price, img: imgSrc, label: name[0], qty: 1 }); }
+      const btn = document.getElementById('prodAdd');
+      btn.textContent = '✓ Добавено в кошницата';
+      btn.classList.add('added');
+      setTimeout(() => { btn.textContent = 'Добави в Кошницата'; btn.classList.remove('added'); }, 2000);
+      saveCart(); renderCart(); openCart();
+    }
+
+    function changeQty(n, d) { const i=cart.find(x=>x.name===n); if(!i)return; i.qty+=d; if(i.qty<=0)cart=cart.filter(x=>x.name!==n); saveCart();renderCart(); }
+    function removeItem(n)   { cart=cart.filter(x=>x.name!==n); saveCart();renderCart(); }
+
+    function renderCart() {
+      const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+      const count = cart.reduce((s,i)=>s+i.qty,0);
+      cartBadge.textContent=count; cartBadge.classList.toggle('show',count>0);
+      cartTotalEl.textContent=total.toLocaleString('bg-BG')+' лв.';
+      cartFooterEl.style.display=cart.length?'block':'none';
+      Array.from(cartItemsEl.children).forEach(c=>{ if(c!==cartEmptyEl)c.remove(); });
+      cartEmptyEl.style.display=cart.length?'none':'flex';
+      cart.forEach(item=>{
+        const el=document.createElement('div'); el.className='cart-item';
+        const thumbHtml=item.img?`<img src="${item.img}" style="width:64px;height:64px;object-fit:cover;flex-shrink:0;" alt=""/>`:item.label;
+        el.innerHTML=`${thumbHtml}<div class="cart-item-info"><div class="cart-item-name">${item.name}</div><div class="cart-item-artist">${item.artist}</div><div class="cart-item-row"><span class="cart-item-price">${(item.price*item.qty).toLocaleString('bg-BG')} лв.</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty('${item.name}',-1)">−</button><span class="qty-val">${item.qty}</span><button class="qty-btn" onclick="changeQty('${item.name}',1)">+</button></div><button class="cart-item-remove" onclick="removeItem('${item.name}')">Премахни</button></div></div>`;
+        cartItemsEl.appendChild(el);
+      });
+    }
+
+    // Mobile nav
+    document.getElementById('burger').addEventListener('click',()=>document.getElementById('mobileNav').classList.add('open'));
+    document.getElementById('mobileClose').addEventListener('click',()=>document.getElementById('mobileNav').classList.remove('open'));
+
+    renderCart();
+  </script>
+</body>
+</html>

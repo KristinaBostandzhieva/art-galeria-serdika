@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Галерия Сердика — Съвременно Изкуство</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='52' cy='62' rx='24' ry='28' fill='%23c8402a'/><ellipse cx='64' cy='62' rx='18' ry='26' fill='%23e06828'/><ellipse cx='72' cy='62' rx='12' ry='22' fill='%23f0a820'/><ellipse cx='78' cy='62' rx='7' ry='18' fill='%233a9c3a'/><rect x='49' y='26' width='5' height='14' rx='2.5' fill='%235a3010'/><ellipse cx='62' cy='30' rx='11' ry='6' fill='%233a9c3a' transform='rotate(-30 62 30)'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white:   #ffffff;
+      --off:     #f7f5f1;
+      --paper:   #edeae4;
+      --border:  #d8d2c8;
+      --text:    #1a1814;
+      --muted:   #7a746c;
+      --red:     #c8402a;
+      --red-dk:  #9e2f1c;
+      --orange:  #e06828;
+      --green:   #3a7c3a;
+      --black:   #111110;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center;
+      align-items: center;
+      padding: 0 3rem;
+      height: 72px;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(8px);
+      transition: background .45s ease, border-color .45s ease, box-shadow .45s ease;
+    }
+    .nav-right { display: flex; align-items: center; gap: .8rem; justify-content: flex-end; }
+    nav.scrolled {
+      border-color: var(--border);
+      box-shadow: 0 2px 20px rgba(0,0,0,.06);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; text-decoration: none;
+      flex-shrink: 0; width: 180px; /* fixed — nav links never shift */
+    }
+    .nav-logo-hero-img, .nav-logo-white-img {
+      height: 54px; width: 180px;
+      object-fit: contain;
+      object-position: left center;
+    }
+    .nav-logo-hero-img  { display: none; transition: opacity .45s ease; }
+    .nav-logo-white-img { display: block; transition: opacity .45s ease; }
+    .nav-links a { transition: opacity .2s, color .45s ease; }
+    /* transparent header: show footer.png, hide black logo */
+    nav.hero-mode .nav-logo-hero-img  { display: block; }
+    nav.hero-mode .nav-logo-white-img { display: none; }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; margin-left: auto; margin-right: 2rem; }
+    .nav-links a {
+      color: var(--text); text-decoration: none;
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+      opacity: .6; transition: opacity .2s, color .2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--red); }
+
+    .nav-cta {
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--red) !important; opacity: 1 !important;
+      background: none; padding: 0;
+      border: none;
+      font-weight: 500;
+      transition: color .2s !important;
+    }
+    .nav-cta:hover { color: var(--text) !important; opacity: 1 !important; }
+
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+    .burger span { display: block; width: 24px; height: 1.5px; background: var(--text); transition: .3s; }
+
+    /* ── NAV HERO MODE ── */
+    nav.hero-mode {
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+    nav.hero-mode .nav-links a { color: rgba(255,255,255,.75); }
+    nav.hero-mode .nav-links a:hover { color: #fff; opacity: 1; }
+    .nav-logo-dark  { display: none; }
+    nav.hero-mode .nav-logo-light { display: none !important; }
+    nav.hero-mode .nav-logo-dark  { display: block !important; height: 46px; width: auto; }
+    nav.hero-mode .nav-logo-svg-full { display: none !important; }
+    nav.hero-mode .nav-cart { color: rgba(255,255,255,.75); }
+    nav.hero-mode .burger span { background: #fff; }
+    nav.hero-mode .nav-right .lang-toggle { border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.7); }
+    nav.hero-mode .nav-cta {
+      background: rgba(255,255,255,.12) !important;
+      color: #fff !important;
+      border-color: rgba(255,255,255,.3) !important;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: #0c0a08;
+    }
+    .hero-slide {
+      position: absolute; inset: 0;
+      background: center/cover no-repeat;
+      opacity: 0;
+      transition: opacity 1.8s ease-in-out;
+    }
+    .hero-slide.active { opacity: .35; }
+    .hero-bg-overlay {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(180,50,30,.15) 0%, transparent 70%),
+        linear-gradient(to bottom, rgba(12,10,8,.3) 0%, rgba(12,10,8,.6) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 780px; padding: 0 2rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .hero-center-logo {
+      width: min(320px, 70vw); margin-bottom: 2.5rem;
+      opacity: 0; animation: fadeUp .9s .2s forwards;
+      filter: drop-shadow(0 4px 20px rgba(0,0,0,.4));
+    }
+    .hero-eyebrow {
+      font-size: .62rem; letter-spacing: .4em; text-transform: uppercase;
+      color: rgba(255,255,255,.35); margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp .7s .5s forwards;
+    }
+    .hero-rule { display: none; }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 8vw, 8rem);
+      font-weight: 300; line-height: .92; color: #fff;
+      letter-spacing: -.01em;
+      opacity: 0; animation: fadeUp .9s .6s forwards;
+    }
+    .hero-title em { font-style: italic; color: rgba(220,110,90,.9); display: block; }
+    .hero-desc {
+      margin-top: 2rem; font-size: .82rem;
+      color: rgba(255,255,255,.45); letter-spacing: .1em; line-height: 1.9;
+      max-width: 400px;
+      opacity: 0; animation: fadeUp .8s .8s forwards;
+    }
+    .hero-actions {
+      margin-top: 3rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      opacity: 0; animation: fadeUp .8s .95s forwards;
+    }
+    .btn-hero-primary {
+      background: rgba(255,255,255,.95); color: #0c0a08;
+      font-family: 'Montserrat',sans-serif; font-size: .7rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      padding: .95rem 2.6rem; border: none; cursor: pointer;
+      font-weight: 500; transition: background .2s; text-decoration: none; display: inline-block;
+    }
+    .btn-hero-primary:hover { background: #fff; }
+    .btn-hero-line {
+      background: transparent; color: rgba(255,255,255,.8);
+      border: 1px solid rgba(255,255,255,.25);
+      font-family: 'Montserrat',sans-serif; font-size: .7rem;
+      letter-spacing: .2em; text-transform: uppercase;
+      padding: .95rem 2.6rem; cursor: pointer; font-weight: 300;
+      transition: border-color .2s, color .2s; text-decoration: none; display: inline-block;
+    }
+    .btn-hero-line:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 0; right: 0;
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      opacity: 0; animation: fadeUp .7s 1.3s forwards;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 44px;
+      background: linear-gradient(to bottom, rgba(255,255,255,.4), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    .hero-scroll-text { font-size: .58rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(255,255,255,.3); }
+    @keyframes scrollPulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: var(--text);
+    }
+    .stat-item {
+      padding: 2.4rem 1.5rem; text-align: center;
+      border-right: 1px solid rgba(255,255,255,.06);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-big { font-family: 'Cormorant Garamond',serif; font-size: 3rem; font-weight: 300; color: #fff; line-height: 1; }
+    .stat-lbl { font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: .4rem; }
+
+    .btn {
+      display: inline-block; text-decoration: none; cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+      padding: .85rem 2.2rem; transition: .22s; border: none;
+    }
+    .btn-dark  { background: var(--text); color: var(--white); }
+    .btn-dark:hover  { background: var(--red); }
+    .btn-line  { border: 1.5px solid var(--border); color: var(--text); background: transparent; }
+    .btn-line:hover  { border-color: var(--red); color: var(--red); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ── SECTIONS ── */
+    section { padding: 7rem 4rem; }
+
+    .section-label {
+      display: block; font-size: .6rem; letter-spacing: .35em;
+      text-transform: uppercase; color: var(--red); margin-bottom: .9rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.15;
+      color: var(--text); margin-bottom: 1.2rem;
+    }
+    .section-title em { font-style: italic; color: var(--red); }
+    .divider { width: 40px; height: 2px; background: var(--red); margin-bottom: 1.4rem; }
+    .section-desc { color: var(--muted); max-width: 520px; font-size: .86rem; line-height: 1.8; }
+
+
+    /* ── EXHIBITIONS SPLIT ── */
+    #exhibitions { background: var(--white); }
+
+    .ex-split {
+      display: grid; grid-template-columns: 3fr 2fr;
+      margin-top: 2.5rem; border: 1px solid var(--border); overflow: hidden;
+    }
+
+    .ex-images { position: relative; overflow: hidden; }
+    .ex-track { display: flex; height: 100%; transition: transform .6s cubic-bezier(.4,0,.2,1); }
+    .exhibit-card { min-width: 100%; flex-shrink: 0; }
+    .exhibit-thumb { aspect-ratio: 3/2; width: 100%; }
+    .exhibit-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 8s ease; }
+    .ex-split:hover .exhibit-thumb img { transform: scale(1.03); }
+
+    .ex-panel {
+      background: var(--off); border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 3rem;
+    }
+    .ex-panel-top { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .ex-panel-tag {
+      font-size: .58rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 1.4rem; display: block;
+    }
+    .ex-panel-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 2.2vw, 2.6rem); font-weight: 300; line-height: 1.1;
+      color: var(--text); margin-bottom: .5rem;
+    }
+    .ex-panel-artist { font-size: .82rem; color: var(--muted); }
+    .ex-panel-divider { width: 36px; height: 1px; background: var(--border); margin: 2rem 0; }
+    .ex-panel-desc { font-size: .8rem; color: var(--muted); line-height: 1.85; }
+
+    .ex-panel-nav {
+      display: flex; align-items: center; gap: .8rem;
+      padding-top: 2rem; border-top: 1px solid var(--border); margin-top: 2.5rem;
+    }
+    .ex-nav-btn {
+      width: 38px; height: 38px; border: 1px solid var(--border);
+      background: none; cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text); transition: background .2s, border-color .2s, color .2s; flex-shrink: 0;
+    }
+    .ex-nav-btn:hover { background: var(--text); border-color: var(--text); color: var(--white); }
+    .ex-counter-txt { font-size: .65rem; letter-spacing: .15em; color: var(--muted); flex: 1; }
+    .ex-dots { display: flex; gap: .5rem; }
+    .ex-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border); transition: background .25s, transform .25s; cursor: pointer;
+    }
+    .ex-dot.active { background: var(--red); transform: scale(1.3); }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--off);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+
+    .about-logo-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 2rem;
+    }
+    .about-logo-main {
+      width: 100%; max-width: 420px;
+      padding: 3rem; background: var(--white);
+      box-shadow: 0 4px 30px rgba(0,0,0,.06);
+    }
+    .about-caption {
+      font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--muted); text-align: center;
+    }
+
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem;
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300; line-height: 1; color: var(--red);
+    }
+    .stat-label {
+      font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--muted); margin-top: .3rem;
+    }
+
+    /* ── SHOP ── */
+    #shop { background: var(--off); }
+    .shop-filters {
+      display: flex; gap: 0; margin-top: 2.5rem; margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .shop-filter-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Montserrat', sans-serif; font-size: .68rem;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+      padding: .9rem 1.8rem; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: color .2s, border-color .2s;
+    }
+    .shop-filter-btn:hover { color: var(--text); }
+    .shop-filter-btn.active { color: var(--red); border-bottom-color: var(--red); }
+
+    .shop-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+    }
+    .shop-card {
+      background: var(--white); overflow: hidden;
+      border: 1px solid var(--border); transition: box-shadow .3s, transform .3s;
+    }
+    .shop-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.09); transform: translateY(-3px); }
+
+    .shop-img { aspect-ratio: 3/4; overflow: hidden; position: relative; }
+    .shop-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+    .shop-card:hover .shop-img img { transform: scale(1.04); }
+    .shop-badge {
+      position: absolute; top: .8rem; left: .8rem;
+      background: var(--red); color: #fff;
+      font-size: .55rem; letter-spacing: .18em; text-transform: uppercase;
+      padding: .28rem .7rem; font-weight: 500;
+    }
+
+    .shop-info { padding: 1.1rem 1.2rem 1.4rem; }
+    .shop-category { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--red); margin-bottom: .4rem; }
+    .shop-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 400; color: var(--text); line-height: 1.2; margin-bottom: .2rem;
+    }
+    .shop-artist { font-size: .72rem; color: var(--muted); margin-bottom: .9rem; }
+    .shop-footer { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+    .shop-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 400; color: var(--text);
+    }
+    .shop-add {
+      font-family: 'Montserrat', sans-serif; font-size: .58rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      padding: .5rem 1rem; border: 1.5px solid var(--border);
+      background: none; color: var(--text); cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s; white-space: nowrap;
+    }
+    .shop-add:hover { background: var(--text); border-color: var(--text); color: #fff; }
+    .shop-add.added { background: var(--red); border-color: var(--red); color: #fff; }
+
+    .magnifier-lens {
+      position: absolute; pointer-events: none; display: none; z-index: 20;
+      width: 130px; height: 130px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.7);
+      box-shadow: 0 4px 24px rgba(0,0,0,.3);
+      background-repeat: no-repeat;
+    }
+
+    @media (max-width: 1100px) { .shop-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 760px)  { .shop-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 480px)  { .shop-grid { grid-template-columns: 1fr; } }
+
+    /* ── ARTISTS ── */
+    #artists { background: var(--white); }
+    .artists-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem; margin-top: 4rem;
+    }
+    .artist-card {
+      border: 1px solid var(--border); overflow: hidden;
+      transition: box-shadow .3s, transform .3s;
+      background: var(--white);
+    }
+    .artist-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.1); transform: translateY(-4px); }
+
+    .artist-img { aspect-ratio: 3/4; overflow: hidden; position: relative; }
+    .artist-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+    .artist-card:hover .artist-img img { transform: scale(1.05); }
+    .artist-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,8,6,.55) 0%, transparent 50%);
+    }
+
+    .artist-info { padding: 1.3rem 1.4rem 1.5rem; }
+    .artist-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 400; color: var(--text); margin-bottom: .25rem; line-height: 1.2;
+    }
+    .artist-style { font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--red); }
+    .artist-bio { margin-top: .7rem; font-size: .78rem; color: var(--muted); line-height: 1.65; }
+
+    @media (max-width: 900px) { .artists-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .artists-row { grid-template-columns: 1fr; } }
+
+    /* ── VISIT ── */
+    #visit {
+      background: var(--off);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch;
+      padding: 0;
+    }
+    .visit-info { padding: 6rem 4rem; }
+    .visit-block { padding-top: 1.8rem; margin-top: 1.8rem; border-top: 1px solid var(--border); }
+    .visit-block-label {
+      font-size: .58rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .75rem;
+    }
+    .visit-block p { font-size: .86rem; color: var(--text); line-height: 1.9; }
+    .visit-block a { color: var(--text); text-decoration: none; transition: color .2s; }
+    .visit-block a:hover { color: var(--red); }
+    .visit-schedule {
+      display: grid; grid-template-columns: 1fr auto; row-gap: .3rem;
+      font-size: .84rem;
+    }
+    .visit-schedule .day   { color: var(--text); }
+    .visit-schedule .hours { color: var(--muted); }
+    .visit-map { position: relative; min-height: 520px; }
+    .visit-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--white);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0;
+    }
+    .contact-left {
+      background: var(--off); padding: 6rem 4rem;
+      display: flex; flex-direction: column; justify-content: center; gap: 2rem;
+      border-left: 1px solid var(--border);
+    }
+    .contact-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 300; line-height: 1.2;
+      color: var(--text);
+    }
+    .contact-quote em { font-style: italic; color: var(--red); }
+    .contact-details { display: flex; flex-direction: column; gap: 1.2rem; margin-top: .5rem; }
+    .contact-detail-row { display: flex; flex-direction: column; gap: .2rem; }
+    .contact-detail-label { font-size: .58rem; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
+    .contact-detail-val { font-size: .88rem; color: var(--text); }
+    .contact-detail-val a { color: var(--text); text-decoration: none; transition: color .2s; }
+    .contact-detail-val a:hover { color: var(--red); }
+    .contact-right { padding: 6rem 4rem; background: var(--white); }
+    form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    input, textarea, select {
+      width: 100%; background: var(--off);
+      border: 1px solid var(--border); color: var(--text);
+      padding: .9rem 1.1rem; font-family: 'Montserrat', sans-serif;
+      font-size: .82rem; outline: none; transition: border-color .2s, background .2s;
+    }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    input:focus, textarea:focus { border-color: var(--red); background: var(--white); }
+    textarea { resize: vertical; min-height: 140px; }
+    .form-submit { margin-top: .5rem; }
+    .form-submit .btn { width: 100%; display: block; text-align: center; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0e0d0b;
+      border-top: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 -8px 40px rgba(255,255,255,.06);
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 3rem; padding: 4rem;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .footer-brand {}
+    .footer-logo-img { height: 120px; width: auto; object-fit: contain; opacity: .9; margin-bottom: 1rem; display: block; }
+    .footer-tagline { font-size: .78rem; color: rgba(255,255,255,.35); line-height: 1.7; max-width: 220px; }
+
+    .footer-col-title {
+      font-size: .6rem; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,.3); margin-bottom: 1.2rem; display: block;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .65rem; }
+    .footer-col a {
+      font-size: .78rem; color: rgba(255,255,255,.5); text-decoration: none;
+      transition: color .2s; line-height: 1.4;
+    }
+    .footer-col a:hover { color: var(--red); }
+    .footer-col p { font-size: .78rem; color: rgba(255,255,255,.5); line-height: 1.8; }
+
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem; flex-wrap: wrap; gap: 1rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 -1px 12px rgba(0,0,0,.35);
+    }
+    .footer-copy { font-size: .65rem; color: rgba(255,255,255,.2); letter-spacing: .05em; }
+    .footer-legal { display: flex; gap: 1.5rem; }
+    .footer-legal a { font-size: .65rem; color: rgba(255,255,255,.2); text-decoration: none; transition: color .2s; }
+    .footer-legal a:hover { color: rgba(255,255,255,.5); }
+
+    /* ── CART ── */
+    .nav-cart {
+      position: relative; background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: .5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text); padding: .4rem .6rem;
+      transition: color .2s;
+    }
+    .nav-cart:hover { color: var(--red); }
+    .nav-cart svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .cart-badge {
+      position: absolute; top: 0; right: 0;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      font-size: .55rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: scale(0); transition: .2s;
+    }
+    .cart-badge.show { opacity: 1; transform: scale(1); }
+
+    /* Drawer overlay */
+    .cart-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(26,24,20,.4);
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    /* Drawer panel */
+    .cart-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; z-index: 201;
+      width: min(420px, 100vw);
+      background: var(--white);
+      box-shadow: -4px 0 40px rgba(0,0,0,.12);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+
+    .cart-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.6rem 1.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400;
+    }
+    .cart-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.4rem; color: var(--muted); transition: color .2s;
+      line-height: 1;
+    }
+    .cart-close:hover { color: var(--text); }
+
+    .cart-items {
+      flex: 1; overflow-y: auto; padding: 1.2rem 1.8rem;
+    }
+
+    .cart-empty {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; height: 100%; gap: 1rem;
+      color: var(--muted);
+    }
+    .cart-empty svg { width: 48px; height: 48px; stroke: var(--border); fill: none; stroke-width: 1; }
+    .cart-empty p { font-size: .82rem; letter-spacing: .08em; }
+
+    .cart-item {
+      display: flex; gap: 1rem; padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp .3s ease forwards;
+    }
+    .cart-item-thumb {
+      width: 64px; height: 64px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; color: var(--white);
+    }
+    .ci-red    { background: #f0e8e4; color: var(--red); }
+    .ci-blue   { background: #e8eef0; color: #4a6fa5; }
+    .ci-green  { background: #e8f0e8; color: var(--green); }
+    .ci-orange { background: #f0ece4; color: var(--orange); }
+    .ci-purple { background: #eee8f0; color: #7a5ca0; }
+    .ci-warm   { background: #f0ede4; color: var(--red); }
+
+    .cart-item-info { flex: 1; }
+    .cart-item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; color: var(--text); line-height: 1.2; margin-bottom: .2rem;
+    }
+    .cart-item-artist { font-size: .72rem; color: var(--muted); margin-bottom: .5rem; }
+    .cart-item-row { display: flex; align-items: center; gap: .8rem; }
+    .cart-item-price { font-size: .82rem; font-weight: 500; color: var(--text); }
+
+    .qty-ctrl {
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .qty-btn {
+      width: 24px; height: 24px; border: 1px solid var(--border);
+      background: none; cursor: pointer; font-size: .9rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text); transition: border-color .2s, color .2s;
+    }
+    .qty-btn:hover { border-color: var(--red); color: var(--red); }
+    .qty-val { font-size: .8rem; min-width: 18px; text-align: center; }
+
+    .cart-item-remove {
+      background: none; border: none; cursor: pointer;
+      font-size: .7rem; color: var(--muted); letter-spacing: .1em;
+      text-transform: uppercase; transition: color .2s; align-self: center;
+    }
+    .cart-item-remove:hover { color: var(--red); }
+
+    .cart-footer {
+      padding: 1.4rem 1.8rem;
+      border-top: 1px solid var(--border);
+    }
+    .cart-total-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 1.2rem;
+    }
+    .cart-total-label { font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+    .cart-total-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 400; color: var(--text);
+    }
+    .cart-checkout {
+      width: 100%; padding: 1rem; text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      background: var(--text); color: var(--white); border: none; cursor: pointer;
+      transition: background .22s;
+    }
+    .cart-checkout:hover { background: var(--red); }
+    .cart-note { font-size: .68rem; color: var(--muted); text-align: center; margin-top: .8rem; }
+
+    /* add-to-cart button on cards */
+    .add-btn {
+      padding: .65rem 1.8rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--text); cursor: pointer; white-space: nowrap;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .add-btn:hover { background: var(--text); border-color: var(--text); color: var(--white); }
+    .add-btn.added { background: var(--red); border-color: var(--red); color: var(--white); }
+
+    /* ── CHECKOUT MODAL ── */
+    #checkoutModal { display: none; }
+    #checkoutModal.open { display: flex; }
+
+    /* ── LANGUAGE TOGGLE ── */
+    .lang-toggle {
+      font-family: 'Montserrat', sans-serif; font-size: .62rem;
+      letter-spacing: .18em; font-weight: 500;
+      background: none; border: 1px solid var(--border);
+      padding: .38rem .8rem; cursor: pointer; color: var(--text);
+      transition: border-color .3s, color .3s;
+    }
+    .lang-toggle:hover { border-color: var(--red); color: var(--red); }
+    nav.hero-mode .lang-toggle { border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.7); }
+    nav.hero-mode .lang-toggle:hover { border-color: #fff; color: #fff; }
+
+    /* ── BACK TO TOP ── */
+    #backTop {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 99;
+      width: 54px; height: 54px; border-radius: 50%;
+      background: #fff; color: var(--text);
+      border: 2px solid var(--text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      opacity: 0; pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity .3s, transform .3s, background .2s;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    #backTop.show { opacity: 1; pointer-events: all; transform: translateY(0); }
+    #backTop:hover { background: var(--red); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s, transform .7s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .burger { display: flex; }
+
+      section { padding: 4rem 1.5rem; }
+
+      /* Hero */
+      .hero-title { font-size: clamp(2.8rem,10vw,5rem); }
+
+      /* Stats strip */
+      .stats-strip { grid-template-columns: 1fr 1fr; }
+      .stat-item:nth-child(2) { border-right: none; }
+
+      /* Exhibitions split → stacked */
+      .ex-split { grid-template-columns: 1fr; }
+      .exhibit-thumb { height: 55vw; min-height: 240px; }
+      .ex-panel { padding: 1.8rem; min-height: unset; }
+
+      /* About */
+      #about { grid-template-columns: 1fr; gap: 2rem; }
+      .about-logo-main { max-width: 100%; }
+
+      /* Artists */
+      .artists-row { grid-template-columns: 1fr 1fr; }
+
+      /* Shop */
+      .shop-grid { grid-template-columns: 1fr 1fr; }
+      .shop-filters { overflow-x: auto; flex-wrap: nowrap; }
+
+      /* Visit */
+      #visit { grid-template-columns: 1fr; padding: 0; }
+      .visit-info { padding: 3rem 1.5rem; }
+      .visit-map { min-height: 280px; }
+
+      /* Contact */
+      #contact { grid-template-columns: 1fr; }
+      .contact-left { border-left: none; border-top: 1px solid var(--border); padding: 3rem 1.5rem; order: 2; }
+      .contact-right { padding: 3rem 1.5rem; order: 1; }
+      .form-row { grid-template-columns: 1fr; }
+
+      /* Footer */
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+      .footer-bottom { padding: 1.2rem 1.5rem; flex-direction: column; align-items: flex-start; gap: .6rem; }
+
+      /* Back to top */
+      #backTop { bottom: 1rem; right: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: clamp(2.2rem, 11vw, 3.5rem); }
+      .stats-strip { grid-template-columns: 1fr 1fr; }
+      .artists-row { grid-template-columns: 1fr; }
+      .shop-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .ex-split { min-height: unset; }
+    }
+
+    /* mobile nav */
+    .mobile-nav {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: var(--white); flex-direction: column;
+      align-items: center; justify-content: center; gap: 2.2rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; color: var(--text); text-decoration: none; transition: color .2s;
+    }
+    .mobile-nav a:hover { color: var(--red); }
+    .mobile-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none; color: var(--text);
+      font-size: 1.8rem; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">
+      <img src="footer-consistent.png"    alt="Галерия Сердика" class="nav-logo-hero-img"/>
+      <img src="black-logo-consistent.png" alt="Галерия Сердика" class="nav-logo-white-img"/>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#exhibitions" data-en="Exhibitions">Изложби</a></li>
+      <li><a href="#shop" data-en="Shop">Магазин</a></li>
+      <li><a href="#about" data-en="About">За Нас</a></li>
+      <li><a href="#artists" data-en="Artists">Художници</a></li>
+      <li><a href="#visit" data-en="Visit">Посещение</a></li>
+      <li><a href="#contact" class="nav-cta" data-en="Contact">Контакт</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-cart" id="cartBtn" aria-label="Кошница">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button id="langToggle" class="lang-toggle" onclick="toggleLang()">EN</button>
+      <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-close" id="mobileClose">✕</button>
+    <a href="#exhibitions" onclick="closeMobile()" data-en="Exhibitions">Изложби</a>
+    <a href="#shop"        onclick="closeMobile()" data-en="Shop">Магазин</a>
+    <a href="#about"       onclick="closeMobile()" data-en="About">За Нас</a>
+    <a href="#artists"     onclick="closeMobile()" data-en="Artists">Художници</a>
+    <a href="#visit"       onclick="closeMobile()" data-en="Visit">Посещение</a>
+    <a href="#contact"     onclick="closeMobile()" data-en="Contact">Контакт</a>
+    <button class="lang-toggle" onclick="toggleLang();closeMobile()" id="mobileLangToggle" style="margin-top:1rem;font-size:.9rem;padding:.5rem 1.2rem">EN</button>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-slide active" style="background-image:url('gallery-hero.png')"></div>
+    <div class="hero-slide"        style="background-image:url('gallery-hero-1.png')"></div>
+    <div class="hero-slide"        style="background-image:url('art-gallery-hero-3.jpg')"></div>
+    <div class="hero-slide"        style="background-image:url('art-gallery-hero-4.jpg')"></div>
+    <div class="hero-bg-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow" data-en="Founded 1994 · Sofia, Bulgaria">Основана 1994 · София, България</p>
+      <h1 class="hero-title" data-en-html="Gallery<em>Serdica</em>">
+        Галерия<em>Сердика</em>
+      </h1>
+      <p class="hero-desc">
+        Пространство за съвременно изкуство в сърцето на София.<br>
+        Основана 1994 · Независима галерия
+      </p>
+      <div class="hero-actions">
+        <a href="#exhibitions" class="btn-hero-primary" data-en="Current Exhibitions">Текущи Изложби</a>
+        <a href="#about"       class="btn-hero-line"    data-en="About the Gallery">За Галерията</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span class="hero-scroll-text" data-en="Scroll">Скролни</span>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-big">30+</div>
+      <div class="stat-lbl" data-en="Years of History">Години История</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-big">480</div>
+      <div class="stat-lbl" data-en="Exhibitions">Изложби</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-big">200+</div>
+      <div class="stat-lbl" data-en="Artists">Художници</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-big">60K</div>
+      <div class="stat-lbl" data-en="Visitors / Year">Посетители / Год.</div>
+    </div>
+  </div>
+
+
+  <!-- EXHIBITIONS -->
+  <section id="exhibitions">
+    <div class="reveal">
+      <span class="section-label" data-en="Program 2025 – 2026">Програма 2025 – 2026</span>
+      <h2 class="section-title" data-en-html='Current <em>Exhibitions</em>'>Текущи <em>Изложби</em></h2>
+      <div class="divider"></div>
+      <p class="section-desc" data-en="Six parallel exhibition spaces, each with a different artistic dialogue.">Шест паралелни изложбени пространства, всяко с различен художествен диалог.</p>
+    </div>
+
+    <div class="ex-slider reveal" style="transition-delay:.15s">
+      <div class="ex-split reveal" style="transition-delay:.15s">
+
+      <!-- Images -->
+      <div class="ex-images">
+        <div class="ex-track" id="exTrack">
+          <div class="exhibit-card"><div class="exhibit-thumb"><img src="https://picsum.photos/seed/serdika-p1/900/675" alt="" loading="lazy"/></div></div>
+          <div class="exhibit-card"><div class="exhibit-thumb"><img src="https://picsum.photos/seed/serdika-p2/900/675" alt="" loading="lazy"/></div></div>
+          <div class="exhibit-card"><div class="exhibit-thumb"><img src="https://picsum.photos/seed/serdika-p3/900/675" alt="" loading="lazy"/></div></div>
+          <div class="exhibit-card"><div class="exhibit-thumb"><img src="https://picsum.photos/seed/serdika-p4/900/675" alt="" loading="lazy"/></div></div>
+          <div class="exhibit-card"><div class="exhibit-thumb"><img src="https://picsum.photos/seed/serdika-p5/900/675" alt="" loading="lazy"/></div></div>
+          <div class="exhibit-card"><div class="exhibit-thumb"><img src="https://picsum.photos/seed/serdika-p6/900/675" alt="" loading="lazy"/></div></div>
+        </div>
+      </div>
+
+      <!-- Info panel -->
+      <div class="ex-panel">
+        <div class="ex-panel-top">
+          <span class="ex-panel-tag" id="exTag">Живопис · до 28 Февруари</span>
+          <div class="ex-panel-title" id="exTitle">Пространство на Тишината</div>
+          <div class="ex-panel-artist" id="exArtist">Мариана Коларова</div>
+          <div class="ex-panel-divider"></div>
+          <div class="ex-panel-desc" id="exDesc">Серия от 24 платна, изследващи визуалната тишина чрез слоеве цвят и текстура. Официално откриване с присъствие на художника.</div>
+        </div>
+        <div class="ex-panel-nav">
+          <button class="ex-nav-btn" id="exPrev">&#8592;</button>
+          <button class="ex-nav-btn" id="exNext">&#8594;</button>
+          <span class="ex-counter-txt" id="exCounter">01 / 06</span>
+          <div class="ex-dots" id="exDots"></div>
+        </div>
+      </div>
+
+    </div><!-- /ex-split -->
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-logo-wrap reveal">
+      <div class="about-logo-main">
+        <img src="logo.png" alt="Галерия Сердика" style="width:100%; height:auto; display:block;"/>
+      </div>
+      <p class="about-caption" data-en="Official logo of Gallery Serdica">Официално лого на Галерия Сердика</p>
+    </div>
+
+    <div class="reveal" style="transition-delay:.2s">
+      <span class="section-label" data-en="Our History">Нашата История</span>
+      <h2 class="section-title" data-en-html='Three decades<br><em>of living dialogue</em> with art'>Три десетилетия<br><em>жив диалог</em> с изкуството</h2>
+      <div class="divider"></div>
+      <p class="section-desc" style="max-width:100%" data-en="Gallery Serdica was founded in 1994 in the heart of Sofia as an independent space for contemporary art. For thirty years we have presented artists from Bulgaria and Europe, supported young talents, and fostered dialogue between tradition and the avant-garde.">
+        Галерия Сердика е основана през 1994 година в сърцето на София като независимо
+        пространство за съвременно изкуство. В продължение на тридесет години ние представяме
+        художници от България и Европа, подкрепяме млади таланти и водим диалог между
+        традицията и авангарда.
+      </p>
+      <p class="section-desc" style="max-width:100%; margin-top:1rem" data-en="Our mission is to make art accessible — as an experience, as a conversation, as a way to understand the world and ourselves better.">
+        Нашата мисия е да направим изкуството достъпно — като преживяване, като разговор,
+        като начин да разберем света и себе си по-добре.
+      </p>
+      <div class="about-stats">
+        <div><div class="stat-num">30+</div><div class="stat-label" data-en="Years of History">Години История</div></div>
+        <div><div class="stat-num">480</div><div class="stat-label" data-en="Exhibitions">Изложби</div></div>
+        <div><div class="stat-num">200+</div><div class="stat-label" data-en="Artists">Художници</div></div>
+        <div><div class="stat-num">60K</div><div class="stat-label" data-en="Visitors/Year">Посетители/Год.</div></div>
+      </div>
+      <a href="#contact" class="btn btn-dark" style="margin-top:2.5rem; display:inline-block" data-en="Contact Us">Свържи се с Нас</a>
+    </div>
+  </section>
+
+  <!-- ARTISTS -->
+  <section id="artists">
+    <div class="reveal">
+      <span class="section-label" data-en="Permanent Collection">Постоянна Колекция</span>
+      <h2 class="section-title" data-en-html='Featured <em>Artists</em>'>Представяни <em>Художници</em></h2>
+      <div class="divider"></div>
+      <p class="section-desc" data-en="We work with established and emerging names in the contemporary art scene.">Работим с утвърдени и нови имена в съвременната художествена сцена.</p>
+    </div>
+    <div class="artists-row reveal" style="transition-delay:.15s">
+      <div class="artist-card">
+        <div class="artist-img">
+          <img src="https://picsum.photos/seed/serdika-a1/400/530" alt="Мариана Коларова" loading="lazy"/>
+          <div class="artist-img-overlay"></div>
+        </div>
+        <div class="artist-info">
+          <div class="artist-name">Мариана Коларова</div>
+          <div class="artist-style" data-en="Painting · Abstraction">Живопис · Абстракция</div>
+          <p class="artist-bio" data-en="Explores the relationships between colour, texture and emotion through large-scale abstract canvases.">Изследва отношенията между цвят, текстура и емоция чрез мащабни абстрактни платна.</p>
+        </div>
+      </div>
+      <div class="artist-card">
+        <div class="artist-img">
+          <img src="https://picsum.photos/seed/serdika-a2/400/530" alt="Георги Петров" loading="lazy"/>
+          <div class="artist-img-overlay"></div>
+        </div>
+        <div class="artist-info">
+          <div class="artist-name">Георги Петров</div>
+          <div class="artist-style" data-en="Sculpture · Metal">Скулптура · Метал</div>
+          <p class="artist-bio" data-en="Works with industrial materials, transforming them into organic sculptural forms.">Работи с промишлени материали, трансформирайки ги в органични скулптурни форми.</p>
+        </div>
+      </div>
+      <div class="artist-card">
+        <div class="artist-img">
+          <img src="https://picsum.photos/seed/serdika-a3/400/530" alt="Ива Стоянова" loading="lazy"/>
+          <div class="artist-img-overlay"></div>
+        </div>
+        <div class="artist-info">
+          <div class="artist-name">Ива Стоянова</div>
+          <div class="artist-style" data-en="Photography · Documentary">Фотография · Документалистика</div>
+          <p class="artist-bio" data-en="Documents urban landscapes and collective memory through analogue photography.">Документира градски пейзажи и колективна памет чрез аналогова фотография.</p>
+        </div>
+      </div>
+      <div class="artist-card">
+        <div class="artist-img">
+          <img src="https://picsum.photos/seed/serdika-a4/400/530" alt="Кирил Нейков" loading="lazy"/>
+          <div class="artist-img-overlay"></div>
+        </div>
+        <div class="artist-info">
+          <div class="artist-name">Кирил Нейков</div>
+          <div class="artist-style" data-en="New Media · Installation">Нови Медии · Инсталация</div>
+          <p class="artist-bio" data-en="A multidisciplinary artist working at the boundary between technology and space.">Мултидисциплинарен художник на границата между технологията и пространството.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section id="shop">
+    <div class="reveal">
+      <span class="section-label" data-en="Online Shop">Онлайн Магазин</span>
+      <h2 class="section-title" data-en-html='Buy <em>Artwork</em>'>Купи <em>Творба</em></h2>
+      <div class="divider"></div>
+      <p class="section-desc" data-en="Original paintings, limited prints and sculptures directly from the artists.">Оригинални картини, лимитирани принтове и скулптури директно от художниците.</p>
+    </div>
+
+    <div class="shop-filters reveal" style="transition-delay:.1s">
+      <button class="shop-filter-btn active" data-cat="all" data-en="All">Всички</button>
+      <button class="shop-filter-btn" data-cat="живопис" data-en="Painting">Живопис</button>
+      <button class="shop-filter-btn" data-cat="принт"   data-en="Prints">Принтове</button>
+      <button class="shop-filter-btn" data-cat="скулптура" data-en="Sculpture">Скулптура</button>
+      <button class="shop-filter-btn" data-cat="фотография" data-en="Photography">Фотография</button>
+    </div>
+
+    <div class="shop-grid reveal" style="transition-delay:.2s">
+
+      <div class="shop-card" data-cat="живопис">
+        <div class="shop-img">
+          <img src="https://picsum.photos/seed/shop-1/400/533" alt="" loading="lazy"/>
+          <span class="shop-badge">Оригинал</span>
+        </div>
+        <div class="shop-info">
+          <div class="shop-category">Живопис · Акрил</div>
+          <div class="shop-name">Пространство на Тишината №3</div>
+          <div class="shop-artist">Мариана Коларова</div>
+          <div class="shop-footer">
+            <span class="shop-price">1 200 лв.</span>
+            <button class="shop-add" onclick="addToCart(this)"
+              data-name="Пространство на Тишината №3" data-artist="Мариана Коларова"
+              data-price="1200" data-img="https://picsum.photos/seed/shop-1/80/80" data-label="П">Добави</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="принт">
+        <div class="shop-img">
+          <img src="https://picsum.photos/seed/shop-2/400/533" alt="" loading="lazy"/>
+          <span class="shop-badge">Лимитиран</span>
+        </div>
+        <div class="shop-info">
+          <div class="shop-category">Принт · 1/30</div>
+          <div class="shop-name">Слоеве — Синя серия</div>
+          <div class="shop-artist">Десислава Илиева</div>
+          <div class="shop-footer">
+            <span class="shop-price">280 лв.</span>
+            <button class="shop-add" onclick="addToCart(this)"
+              data-name="Слоеве — Синя серия" data-artist="Десислава Илиева"
+              data-price="280" data-img="https://picsum.photos/seed/shop-2/80/80" data-label="С">Добави</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="фотография">
+        <div class="shop-img">
+          <img src="https://picsum.photos/seed/shop-3/400/533" alt="" loading="lazy"/>
+        </div>
+        <div class="shop-info">
+          <div class="shop-category">Фотография · Аналогова</div>
+          <div class="shop-name">Женски Пазар, 1998</div>
+          <div class="shop-artist">Ива Стоянова</div>
+          <div class="shop-footer">
+            <span class="shop-price">350 лв.</span>
+            <button class="shop-add" onclick="addToCart(this)"
+              data-name="Женски Пазар, 1998" data-artist="Ива Стоянова"
+              data-price="350" data-img="https://picsum.photos/seed/shop-3/80/80" data-label="Ж">Добави</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="скулптура">
+        <div class="shop-img">
+          <img src="https://picsum.photos/seed/shop-4/400/533" alt="" loading="lazy"/>
+          <span class="shop-badge">Оригинал</span>
+        </div>
+        <div class="shop-info">
+          <div class="shop-category">Скулптура · Бронз</div>
+          <div class="shop-name">Форма №7</div>
+          <div class="shop-artist">Георги Петров</div>
+          <div class="shop-footer">
+            <span class="shop-price">2 800 лв.</span>
+            <button class="shop-add" onclick="addToCart(this)"
+              data-name="Форма №7" data-artist="Георги Петров"
+              data-price="2800" data-img="https://picsum.photos/seed/shop-4/80/80" data-label="Ф">Добави</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="живопис">
+        <div class="shop-img">
+          <img src="https://picsum.photos/seed/shop-5/400/533" alt="" loading="lazy"/>
+        </div>
+        <div class="shop-info">
+          <div class="shop-category">Живопис · Маслени бои</div>
+          <div class="shop-name">Светлина след Дъжда</div>
+          <div class="shop-artist">Мариана Коларова</div>
+          <div class="shop-footer">
+            <span class="shop-price">950 лв.</span>
+            <button class="shop-add" onclick="addToCart(this)"
+              data-name="Светлина след Дъжда" data-artist="Мариана Коларова"
+              data-price="950" data-img="https://picsum.photos/seed/shop-5/80/80" data-label="С">Добави</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="принт">
+        <div class="shop-img">
+          <img src="https://picsum.photos/seed/shop-6/400/533" alt="" loading="lazy"/>
+          <span class="shop-badge">Лимитиран</span>
+        </div>
+        <div class="shop-info">
+          <div class="shop-category">Принт · 1/20</div>
+          <div class="shop-name">Градска Памет IV</div>
+          <div class="shop-artist">Ива Стоянова</div>
+          <div class="shop-footer">
+            <span class="shop-price">190 лв.</span>
+            <button class="shop-add" onclick="addToCart(this)"
+              data-name="Градска Памет IV" data-artist="Ива Стоянова"
+              data-price="190" data-img="https://picsum.photos/seed/shop-6/80/80" data-label="Г">Добави</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="живопис">
+        <div class="shop-img">
+          <img src="https://picsum.photos/seed/shop-7/400/533" alt="" loading="lazy"/>
+          <span class="shop-badge">Оригинал</span>
+        </div>
+        <div class="shop-info">
+          <div class="shop-category">Живопис · Смесена техника</div>
+          <div class="shop-name">Ехо II</div>
+          <div class="shop-artist">Кирил Нейков</div>
+          <div class="shop-footer">
+            <span class="shop-price">1 650 лв.</span>
+            <button class="shop-add" onclick="addToCart(this)"
+              data-name="Ехо II" data-artist="Кирил Нейков"
+              data-price="1650" data-img="https://picsum.photos/seed/shop-7/80/80" data-label="Е">Добави</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="фотография">
+        <div class="shop-img">
+          <img src="https://picsum.photos/seed/shop-8/400/533" alt="" loading="lazy"/>
+        </div>
+        <div class="shop-info">
+          <div class="shop-category">Фотография · Аналогова</div>
+          <div class="shop-name">Централна Гара, 2001</div>
+          <div class="shop-artist">Ива Стоянова</div>
+          <div class="shop-footer">
+            <span class="shop-price">320 лв.</span>
+            <button class="shop-add" onclick="addToCart(this)"
+              data-name="Централна Гара, 2001" data-artist="Ива Стоянова"
+              data-price="320" data-img="https://picsum.photos/seed/shop-8/80/80" data-label="Ц">Добави</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section id="visit">
+    <div class="visit-info reveal">
+      <span class="section-label" data-en="Visit">Посещение</span>
+      <h2 class="section-title" data-en-html='Find <em>Us</em>'>Намерете <em>ни</em></h2>
+      <div class="divider"></div>
+
+      <div class="visit-block">
+        <div class="visit-block-label" data-en="Address">Адрес</div>
+        <p>ул. „Цар Самуил" 90Б, ет. 2<br>Обновена зона на Женски пазар<br>1000 София, България</p>
+      </div>
+
+      <div class="visit-block">
+        <div class="visit-block-label" data-en="Opening Hours">Работно Време</div>
+        <div class="visit-schedule">
+          <span class="day" data-en="Tuesday – Saturday">Вторник – Събота</span><span class="hours">09:30 – 19:00</span>
+          <span class="day" data-en="Sunday – Monday">Неделя – Понеделник</span><span class="hours" data-en="Closed">Почивни дни</span>
+        </div>
+      </div>
+
+      <div class="visit-block">
+        <div class="visit-block-label" data-en="Contact">Контакти</div>
+        <p>
+          <a href="tel:+35988444338">+359 884 44 43 38</a><br>
+          <a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a>
+        </p>
+      </div>
+
+      <div class="visit-block" style="border-top:none; margin-top:2rem; padding-top:0">
+        <a href="https://www.google.com/maps/place/ул.+%22Цар+Самуил%22+90Б,+1000+София"
+           target="_blank" rel="noopener"
+           class="btn btn-line" style="display:block; text-align:center; width:100%">
+          <span data-en="Open in Google Maps">Отвори в Google Maps</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="visit-map reveal" style="transition-delay:.15s">
+      <iframe
+        src="https://maps.google.com/maps?q=ул.+Цар+Самуил+90Б+1202+София+България&t=&z=17&ie=UTF8&iwloc=&output=embed"
+        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-right reveal">
+      <span class="section-label" data-en="Contact Form">Форма за контакт</span>
+      <h2 class="section-title" style="margin-bottom:2rem" data-en-html='Write <em>to Us</em>'>Пишете <em>ни</em></h2>
+      <form onsubmit="handleForm(event)">
+        <div class="form-row">
+          <input type="text"  placeholder="Вашето Име"  data-en-placeholder="Your Name"    required />
+          <input type="email" placeholder="Имейл Адрес" data-en-placeholder="Email Address" required />
+        </div>
+        <input type="text" placeholder="Тема" data-en-placeholder="Subject"/>
+        <textarea placeholder="Вашето Съобщение…" data-en-placeholder="Your Message…"></textarea>
+        <div class="form-submit">
+          <button type="submit" class="btn btn-dark" data-en="Send Message">Изпрати Съобщение</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="contact-left reveal" style="transition-delay:.15s">
+      <div>
+        <span class="section-label" data-en="Get in Touch">Свържете се с нас</span>
+        <h2 class="contact-quote" data-en-html='Have a question?<br>We would <em>love</em><br>to hear from you.'>
+          Имате въпрос?<br>Ще се <em>радваме</em><br>да чуем от вас.
+        </h2>
+      </div>
+      <div class="contact-details">
+        <div class="contact-detail-row">
+          <span class="contact-detail-label" data-en="Phone">Телефон</span>
+          <span class="contact-detail-val"><a href="tel:+35988444338">+359 884 44 43 38</a></span>
+        </div>
+        <div class="contact-detail-row">
+          <span class="contact-detail-label" data-en="Email">Имейл</span>
+          <span class="contact-detail-val"><a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a></span>
+        </div>
+        <div class="contact-detail-row">
+          <span class="contact-detail-label" data-en="Address">Адрес</span>
+          <span class="contact-detail-val">ул. „Цар Самуил" 90Б, ет. 2<br>1000 София, България</span>
+        </div>
+        <div class="contact-detail-row">
+          <span class="contact-detail-label" data-en="Opening Hours">Работно Време</span>
+          <span class="contact-detail-val">Вт – Сб: 09:30 – 19:00</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutModal" style="position:fixed;inset:0;z-index:300;background:rgba(26,24,20,.6);align-items:center;justify-content:center;">
+    <div style="background:#fff;width:min(520px,95vw);max-height:90vh;overflow-y:auto;padding:3rem;position:relative;">
+      <button id="checkoutClose" style="position:absolute;top:1.2rem;right:1.2rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#7a746c;">✕</button>
+      <span style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:#c8402a">Завърши Поръчката</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin:.6rem 0 1.8rem">Данни за доставка</h2>
+      <form id="checkoutForm" style="display:flex;flex-direction:column;gap:1rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <input type="text"  placeholder="Име" required style="padding:.85rem 1rem;border:1px solid #d8d2c8;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none;"/>
+          <input type="text"  placeholder="Фамилия" required style="padding:.85rem 1rem;border:1px solid #d8d2c8;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none;"/>
+        </div>
+        <input type="email" placeholder="Имейл адрес" required style="padding:.85rem 1rem;border:1px solid #d8d2c8;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none;"/>
+        <input type="tel"   placeholder="Телефон" required style="padding:.85rem 1rem;border:1px solid #d8d2c8;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none;"/>
+        <input type="text"  placeholder="Адрес за доставка" required style="padding:.85rem 1rem;border:1px solid #d8d2c8;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none;"/>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <input type="text" placeholder="Град" required style="padding:.85rem 1rem;border:1px solid #d8d2c8;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none;"/>
+          <input type="text" placeholder="Пощенски код" style="padding:.85rem 1rem;border:1px solid #d8d2c8;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none;"/>
+        </div>
+        <textarea placeholder="Бележки към поръчката (по желание)" rows="3" style="padding:.85rem 1rem;border:1px solid #d8d2c8;font-family:Montserrat,sans-serif;font-size:.82rem;outline:none;resize:none;"></textarea>
+        <p style="font-size:.72rem;color:#7a746c;line-height:1.7;border-top:1px solid #d8d2c8;padding-top:1rem;">
+          Плащането се извършва при доставка или по банков път. Ще се свържем с вас за потвърждение в рамките на 24 часа.
+        </p>
+        <button type="submit" style="background:#1a1814;color:#fff;border:none;padding:1rem;font-family:Montserrat,sans-serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .2s;">
+          Потвърди Поръчката
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- BACK TO TOP -->
+  <button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Нагоре">↑</button>
+
+  <!-- CART OVERLAY + DRAWER -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h2>Кошница</h2>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <p>Кошницата е празна</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Общо</span>
+        <span class="cart-total-val" id="cartTotal">0 лв.</span>
+      </div>
+      <button class="cart-checkout">Към Плащане</button>
+      <p class="cart-note">Безплатна доставка за поръчки над 100 лв.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <img src="footer-consistent.png" alt="Галерия Сердика" class="footer-logo-img"
+             onerror="this.style.display='none'"/>
+        <p class="footer-tagline" data-en="A space for contemporary art in the heart of Sofia since 1994.">Пространство за съвременно изкуство в сърцето на София от 1994 година.</p>
+      </div>
+
+      <div class="footer-col">
+        <span class="footer-col-title" data-en="Navigation">Навигация</span>
+        <ul>
+          <li><a href="#exhibitions" data-en="Exhibitions">Изложби</a></li>
+          <li><a href="#about" data-en="About">За Нас</a></li>
+          <li><a href="#artists" data-en="Artists">Художници</a></li>
+          <li><a href="#visit" data-en="Visit">Посещение</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <span class="footer-col-title" data-en="Contact">Контакти</span>
+        <ul>
+          <li><a href="tel:+35988444338">+359 884 44 43 38</a></li>
+          <li><a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a></li>
+        </ul>
+        <p style="margin-top:1.2rem">ул. „Цар Самуил" 90Б, ет. 2<br>1000 София, България</p>
+      </div>
+
+      <div class="footer-col">
+        <span class="footer-col-title" data-en="Opening Hours">Работно Време</span>
+        <p><span data-en="Tuesday – Saturday">Вторник – Събота</span><br><strong style="color:rgba(255,255,255,.7);font-weight:400">09:30 – 19:00</strong></p>
+        <p style="margin-top:.8rem"><span data-en="Sunday – Monday">Неделя – Понеделник</span><br><strong style="color:rgba(255,255,255,.35);font-weight:300" data-en="Closed">Почивни дни</strong></p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy" data-en="© 2025 Gallery Serdica. All rights reserved.">© 2025 Галерия Сердика. Всички права запазени.</div>
+      <div class="footer-legal">
+        <a href="https://www.facebook.com/gallerySerdica" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:.4rem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Facebook
+        </a>
+        <a href="#">Политика за поверителност</a>
+        <a href="#contact">Контакт</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Hero slideshow
+    (function() {
+      const slides = document.querySelectorAll('.hero-slide');
+      let cur = 0;
+      setInterval(() => {
+        slides[cur].classList.remove('active');
+        cur = (cur + 1) % slides.length;
+        slides[cur].classList.add('active');
+      }, 5000);
+    })();
+
+    // ── Language switcher
+    let currentLang = localStorage.getItem('lang') || 'bg';
+    function toggleLang() {
+      currentLang = currentLang === 'bg' ? 'en' : 'bg';
+      applyLang(currentLang);
+    }
+    function applyLang(lang) {
+      const isEn = lang === 'en';
+
+      // innerHTML swap (headings with em tags, complex markup)
+      document.querySelectorAll('[data-en-html]').forEach(el => {
+        if (!el.dataset.bgHtml) el.dataset.bgHtml = el.innerHTML;
+        el.innerHTML = isEn ? el.dataset.enHtml : el.dataset.bgHtml;
+      });
+
+      // plain text swap
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (!el.dataset.bgText) el.dataset.bgText = el.textContent.trim();
+        el.textContent = isEn ? el.dataset.en : el.dataset.bgText;
+      });
+
+      // placeholder swap
+      document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+        if (!el.dataset.bgPlaceholder) el.dataset.bgPlaceholder = el.placeholder;
+        el.placeholder = isEn ? el.dataset.enPlaceholder : el.dataset.bgPlaceholder;
+      });
+
+      ['langToggle','mobileLangToggle'].forEach(id => {
+        const b = document.getElementById(id);
+        if (b) b.textContent = isEn ? 'BG' : 'EN';
+      });
+      document.documentElement.lang = lang;
+      localStorage.setItem('lang', lang);
+    }
+    if (currentLang === 'en') applyLang('en');
+
+    // ── Back to top
+    const backTop = document.getElementById('backTop');
+    window.addEventListener('scroll', () => backTop.classList.toggle('show', window.scrollY > 400));
+
+    // ── Nav scroll + hero transparency
+    const nav = document.getElementById('nav');
+    function updateNav() {
+      const heroH = document.getElementById('hero')?.offsetHeight || window.innerHeight;
+      nav.classList.toggle('scrolled',   window.scrollY > 60);
+      nav.classList.toggle('hero-mode',  window.scrollY < heroH - 80);
+    }
+    window.addEventListener('scroll', updateNav);
+    updateNav();
+
+    // ── Mobile nav
+    const burger    = document.getElementById('burger');
+    const mobileNav = document.getElementById('mobileNav');
+    const mclose    = document.getElementById('mobileClose');
+    burger.addEventListener('click', () => mobileNav.classList.add('open'));
+    mclose.addEventListener('click', () => mobileNav.classList.remove('open'));
+    function closeMobile() { mobileNav.classList.remove('open'); }
+
+    // ── Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Exhibitions split slider
+    (function() {
+      const track = document.getElementById('exTrack');
+      if (!track) return;
+      const slides = Array.from(track.children);
+      const total  = slides.length;
+      let cur = 0, timer;
+
+      const data = [
+        { tag:'Живопис · до 28 Февруари',  title:'Пространство на Тишината', artist:'Мариана Коларова',  desc:'Серия от 24 платна, изследващи визуалната тишина чрез слоеве цвят и текстура. Официално откриване с присъствие на художника.' },
+        { tag:'Скулптура · до 15 Март',    title:'Форми от Светлина',         artist:'Георги Петров',    desc:'Дванадесет скулптури в бронз и стомана — игра между тежест, форма и светлина в пространството на галерията.' },
+        { tag:'Фотография · до 2 Април',   title:'Градска Памет',             artist:'Ива Стоянова',     desc:'40 аналогови снимки документират трансформацията на централни квартали в София от края на 90-те до днес.' },
+        { tag:'Инсталация · до 20 Май',    title:'Ехо на Границите',          artist:'Кирил Нейков',     desc:'Мултимедийна инсталация, работеща с архивни звукозаписи и пространствени проекции в три канала.' },
+        { tag:'Графика · до 10 Юни',       title:'Слоеве',                    artist:'Десислава Илиева', desc:'18 принта в смесена техника — рисуване, печат и колаж. Всяка творба разказва история в слоеве.' },
+        { tag:'Видеоарт · Постоянна',      title:'Движение в Покой',          artist:'Антон Василев',    desc:'3-канална видеопроекция с продължителност 18 минути, изследваща границата между движение и неподвижност.' },
+      ];
+
+      const tagEl     = document.getElementById('exTag');
+      const titleEl   = document.getElementById('exTitle');
+      const artistEl  = document.getElementById('exArtist');
+      const descEl    = document.getElementById('exDesc');
+      const counterEl = document.getElementById('exCounter');
+      const dotsEl    = document.getElementById('exDots');
+
+      if (dotsEl) slides.forEach((_, i) => {
+        const d = document.createElement('span');
+        d.className = 'ex-dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', () => goTo(i));
+        dotsEl.appendChild(d);
+      });
+
+      function goTo(n) {
+        cur = (n + total) % total;
+        track.style.transform = `translateX(-${cur * 100}%)`;
+        document.querySelectorAll('.ex-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+        const d = data[cur];
+        if (tagEl)     tagEl.textContent     = d.tag;
+        if (titleEl)   titleEl.textContent   = d.title;
+        if (artistEl)  artistEl.textContent  = d.artist;
+        if (descEl)    descEl.textContent    = d.desc;
+        if (counterEl) counterEl.textContent = String(cur + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+        resetTimer();
+      }
+
+      function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(cur + 1), 6000);
+      }
+
+      document.getElementById('exPrev')?.addEventListener('click', () => goTo(cur - 1));
+      document.getElementById('exNext')?.addEventListener('click', () => goTo(cur + 1));
+
+      let tx = 0;
+      track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+      track.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) goTo(dx < 0 ? cur + 1 : cur - 1); }, {passive:true});
+
+      resetTimer();
+    })();
+
+    // ── Shop image circular magnifier
+    document.querySelectorAll('.shop-img').forEach(wrap => {
+      const img = wrap.querySelector('img');
+      if (!img) return;
+      const lens = document.createElement('div');
+      lens.className = 'magnifier-lens';
+      wrap.appendChild(lens);
+      const zoom = 2.8, lensSize = 130;
+      wrap.addEventListener('mousemove', e => {
+        if (!img.complete) return;
+        const r = wrap.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        lens.style.left = (x - lensSize / 2) + 'px';
+        lens.style.top  = (y - lensSize / 2) + 'px';
+        lens.style.backgroundImage = `url('${img.src}')`;
+        lens.style.backgroundSize  = `${r.width * zoom}px ${r.height * zoom}px`;
+        lens.style.backgroundPosition = `${-(x * zoom - lensSize / 2)}px ${-(y * zoom - lensSize / 2)}px`;
+        lens.style.display = 'block';
+        wrap.style.cursor = 'none';
+      });
+      wrap.addEventListener('mouseleave', () => { lens.style.display = 'none'; wrap.style.cursor = ''; });
+    });
+
+    // ── Shop card → product page
+    document.querySelectorAll('.shop-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', e => {
+        if (e.target.closest('.shop-add')) return;
+        const btn  = card.querySelector('.shop-add');
+        const cat  = card.querySelector('.shop-category')?.textContent || '';
+        const badge= card.querySelector('.shop-badge')?.textContent || '';
+        const p = new URLSearchParams({
+          name:   btn.dataset.name,
+          artist: btn.dataset.artist,
+          price:  btn.dataset.price,
+          img:    btn.dataset.img,
+          cat, badge
+        });
+        window.location.href = 'product.html?' + p.toString();
+      });
+    });
+
+    // ── Shop filters
+    document.querySelectorAll('.shop-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.shop-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.shop-card').forEach(card => {
+          card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+        });
+      });
+    });
+
+    // ── Contact form
+    function handleForm(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = 'Изпратено ✓';
+      btn.style.background = '#2a6b3a';
+      setTimeout(() => { btn.textContent = 'Изпрати Съобщение'; btn.style.background = ''; }, 3000);
+    }
+
+    // ── CART
+    let cart = JSON.parse(localStorage.getItem('serdika-cart') || '[]');
+
+    const cartBtn     = document.getElementById('cartBtn');
+    const cartBadge   = document.getElementById('cartBadge');
+    const cartDrawer  = document.getElementById('cartDrawer');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartClose   = document.getElementById('cartClose');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartEmptyEl = document.getElementById('cartEmpty');
+    const cartFooter  = document.getElementById('cartFooter');
+    const cartTotalEl = document.getElementById('cartTotal');
+
+    function openCart()  { cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeCart() { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+    function saveCart()  { localStorage.setItem('serdika-cart', JSON.stringify(cart)); }
+
+    cartBtn.addEventListener('click', openCart);
+    cartClose.addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    function addToCart(btn) {
+      const name   = btn.dataset.name;
+      const artist = btn.dataset.artist;
+      const price  = parseInt(btn.dataset.price);
+      const img    = btn.dataset.img   || '';
+      const label  = btn.dataset.label || name[0];
+
+      const existing = cart.find(i => i.name === name);
+      if (existing) { existing.qty++; }
+      else { cart.push({ name, artist, price, img, label, qty: 1 }); }
+
+      const origText = btn.textContent.trim();
+      btn.textContent = '✓ Добавено';
+      btn.classList.add('added');
+      setTimeout(() => { btn.textContent = origText; btn.classList.remove('added'); }, 1500);
+
+      saveCart(); renderCart(); openCart();
+    }
+
+    function changeQty(name, delta) {
+      const item = cart.find(i => i.name === name);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) cart = cart.filter(i => i.name !== name);
+      saveCart(); renderCart();
+    }
+
+    function removeItem(name) {
+      cart = cart.filter(i => i.name !== name);
+      saveCart(); renderCart();
+    }
+
+    function renderCart() {
+      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      const count = cart.reduce((s, i) => s + i.qty, 0);
+
+      cartBadge.textContent = count;
+      cartBadge.classList.toggle('show', count > 0);
+      cartTotalEl.textContent = total.toLocaleString('bg-BG') + ' лв.';
+      cartFooter.style.display = cart.length ? 'block' : 'none';
+
+      Array.from(cartItemsEl.children).forEach(c => { if (c !== cartEmptyEl) c.remove(); });
+      cartEmptyEl.style.display = cart.length ? 'none' : 'flex';
+
+      cart.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'cart-item';
+        el.style.cursor = 'pointer';
+        const thumbHtml = item.img
+          ? `<img src="${item.img}" style="width:64px;height:64px;object-fit:cover;flex-shrink:0;" alt=""/>`
+          : `<div class="cart-item-thumb ci-red">${item.label}</div>`;
+        el.innerHTML = `
+          ${thumbHtml}
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-artist">${item.artist}</div>
+            <div class="cart-item-row">
+              <span class="cart-item-price">${(item.price * item.qty).toLocaleString('bg-BG')} лв.</span>
+              <div class="qty-ctrl">
+                <button class="qty-btn" onclick="changeQty('${item.name}',-1)">−</button>
+                <span class="qty-val">${item.qty}</span>
+                <button class="qty-btn" onclick="changeQty('${item.name}',1)">+</button>
+              </div>
+              <button class="cart-item-remove" onclick="removeItem('${item.name}')">Премахни</button>
+            </div>
+          </div>`;
+        el.addEventListener('click', e => {
+          if (e.target.closest('.qty-btn') || e.target.closest('.cart-item-remove')) return;
+          const p = new URLSearchParams({ name: item.name, artist: item.artist, price: item.price, img: item.img || '' });
+          window.location.href = 'product.html?' + p.toString();
+        });
+        cartItemsEl.appendChild(el);
+      });
+    }
+
+    // Checkout button → modal
+    document.querySelector('.cart-checkout')?.addEventListener('click', () => {
+      closeCart();
+      document.getElementById('checkoutModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('checkoutClose')?.addEventListener('click', () => {
+      document.getElementById('checkoutModal').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+    document.getElementById('checkoutForm')?.addEventListener('submit', e => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type=submit]');
+      btn.textContent = 'Поръчката е изпратена ✓';
+      btn.style.background = '#2a6b3a';
+      setTimeout(() => {
+        cart = []; saveCart(); renderCart();
+        document.getElementById('checkoutModal').classList.remove('open');
+        document.body.style.overflow = '';
+        btn.textContent = 'Потвърди Поръчката';
+        btn.style.background = '';
+      }, 2500);
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>

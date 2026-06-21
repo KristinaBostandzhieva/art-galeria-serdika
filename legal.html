@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="pageTitle">Правна информация — Галерия Сердика</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='52' cy='62' rx='24' ry='28' fill='%23c8402a'/><ellipse cx='64' cy='62' rx='18' ry='26' fill='%23e06828'/><ellipse cx='72' cy='62' rx='12' ry='22' fill='%23f0a820'/><ellipse cx='78' cy='62' rx='7' ry='18' fill='%233a9c3a'/><rect x='49' y='26' width='5' height='14' rx='2.5' fill='%235a3010'/><ellipse cx='62' cy='30' rx='11' ry='6' fill='%233a9c3a' transform='rotate(-30 62 30)'/></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--white:#fff;--off:#f7f5f1;--border:#d8d2c8;--text:#1a1814;--muted:#7a746c;--red:#c8402a;--black:#111110;}
+    body{background:var(--white);color:var(--text);font-family:'Montserrat',sans-serif;font-weight:300;line-height:1.7}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 4rem;height:72px;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(8px)}
+    .nav-logo{display:flex;align-items:center;text-decoration:none}
+    .nav-logo img{height:64px;width:auto;object-fit:contain}
+    .back-link{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+    .back-link:hover{color:var(--red)}
+
+    .page-hero{padding:120px 4rem 3rem;background:var(--off);border-bottom:1px solid var(--border)}
+    .page-hero-label{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--red);margin-bottom:.7rem;display:block}
+    .page-hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--text)}
+
+    /* Tab nav */
+    .legal-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 4rem;background:var(--white);position:sticky;top:72px;z-index:50;overflow-x:auto}
+    .tab-btn{background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:1rem 1.5rem;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .2s,border-color .2s}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--red);border-bottom-color:var(--red)}
+
+    .legal-body{max-width:820px;margin:0 auto;padding:4rem}
+    .legal-section{display:none}
+    .legal-section.active{display:block}
+    .legal-section h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:1.5rem;color:var(--text)}
+    .legal-section h3{font-size:.82rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text);margin:2rem 0 .7rem}
+    .legal-section p{font-size:.86rem;color:var(--muted);line-height:1.85;margin-bottom:1rem}
+    .legal-section ul{margin:.5rem 0 1rem 1.2rem}
+    .legal-section ul li{font-size:.86rem;color:var(--muted);line-height:1.85;margin-bottom:.3rem}
+    .legal-section a{color:var(--red);text-decoration:none}
+    .legal-section a:hover{text-decoration:underline}
+    .updated{font-size:.72rem;color:var(--border);margin-bottom:2rem;letter-spacing:.08em}
+    .divider{width:40px;height:2px;background:var(--red);margin-bottom:2rem}
+
+    footer{background:var(--black);padding:2rem 4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(255,255,255,.08)}
+    .footer-copy{font-size:.65rem;color:rgba(255,255,255,.25)}
+    .footer-back{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}
+    .footer-back:hover{color:var(--red)}
+
+    @media(max-width:768px){nav{padding:0 1.5rem}.page-hero,.legal-body{padding-left:1.5rem;padding-right:1.5rem}.legal-tabs{padding:0 1.5rem}footer{padding:1.5rem}}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="black-logo-consistent.png" alt="Галерия Сердика" onerror="this.src='logo.png'"/>
+    </a>
+    <a href="index.html" class="back-link">← Към сайта</a>
+  </nav>
+
+  <div class="page-hero">
+    <span class="page-hero-label">Галерия Сердика</span>
+    <h1 class="page-hero-title" id="heroTitle">Правна информация</h1>
+  </div>
+
+  <div class="legal-tabs">
+    <button class="tab-btn active" data-tab="terms">Общи условия</button>
+    <button class="tab-btn" data-tab="privacy">Поверителност</button>
+    <button class="tab-btn" data-tab="cookies">Бисквитки</button>
+    <button class="tab-btn" data-tab="delivery">Доставка</button>
+    <button class="tab-btn" data-tab="returns">Връщане</button>
+  </div>
+
+  <div class="legal-body">
+
+    <!-- TERMS -->
+    <div class="legal-section active" id="tab-terms">
+      <h2>Общи условия</h2>
+      <div class="divider"></div>
+      <p class="updated">Последна актуализация: юни 2026</p>
+
+      <h3>1. Информация за търговеца</h3>
+      <p>Галерия Сердика, ул. „Цар Самуил" 90Б, ет. 2, 1000 София, България.<br>
+      Имейл: <a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a> · Тел.: <a href="tel:+35988444338">+359 884 44 43 38</a></p>
+
+      <h3>2. Предмет</h3>
+      <p>Настоящите общи условия уреждат отношенията между Галерия Сердика (наричана по-долу „Галерията") и потребителите на уебсайта gallery-serdica.com, включително закупуването на произведения на изкуството.</p>
+
+      <h3>3. Поръчка и договор</h3>
+      <p>Поставянето на произведение в количката и потвърждаването на поръчката представлява оферта от страна на купувача. Договорът се счита за сключен след изпращане на потвърждение по имейл от Галерията.</p>
+
+      <h3>4. Цени и плащане</h3>
+      <p>Всички цени са в лева (BGN) или евро (EUR) и включват ДДС, когато е приложимо. Галерията приема плащане с карта чрез защитена платежна система. Плащането се извършва в момента на поръчката.</p>
+
+      <h3>5. Собственост и авторски права</h3>
+      <p>При покупка купувачът придобива физическото произведение. Авторските права върху произведението остават при художника, освен ако изрично не е договорено друго в писмен вид.</p>
+
+      <h3>6. Отговорност</h3>
+      <p>Галерията носи отговорност за верността на описанията и снимките на произведенията. При разлика между снимка и реален обект цветовете и нюансите могат да се различават поради особеностите на фотографията и екранното възпроизвеждане.</p>
+
+      <h3>7. Приложимо право</h3>
+      <p>Настоящите условия се уреждат от българското законодателство. При спорове се прилага Законът за защита на потребителите и Законът за електронната търговия.</p>
+    </div>
+
+    <!-- PRIVACY -->
+    <div class="legal-section" id="tab-privacy">
+      <h2>Политика за поверителност</h2>
+      <div class="divider"></div>
+      <p class="updated">Последна актуализация: юни 2026</p>
+
+      <h3>1. Администратор на лични данни</h3>
+      <p>Галерия Сердика, ул. „Цар Самуил" 90Б, ет. 2, 1000 София. Имейл: <a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a></p>
+
+      <h3>2. Какви данни събираме</h3>
+      <ul>
+        <li>Данни за контакт — три имена, имейл адрес, телефонен номер</li>
+        <li>Адрес за доставка</li>
+        <li>Информация за поръчките и плащанията</li>
+        <li>Технически данни — IP адрес, тип браузър, посетени страници</li>
+      </ul>
+
+      <h3>3. За какво използваме данните</h3>
+      <ul>
+        <li>Обработка и изпълнение на поръчки</li>
+        <li>Комуникация относно поръчки и запитвания</li>
+        <li>Подобряване на уебсайта</li>
+        <li>Спазване на законови задължения</li>
+      </ul>
+
+      <h3>4. Съхранение</h3>
+      <p>Личните данни се съхраняват за срока, необходим за изпълнение на поръчката и в съответствие с приложимото законодателство (обичайно до 5 години за счетоводни цели).</p>
+
+      <h3>5. Вашите права</h3>
+      <p>Имате право на достъп, коригиране, изтриване и преносимост на данните си. За упражняване на правата се свържете с нас на <a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a>.</p>
+
+      <h3>6. Трети страни</h3>
+      <p>Данните не се продават на трети страни. Споделяме данни само с доставчика на платежни услуги и куриерската компания, необходими за изпълнение на поръчката.</p>
+    </div>
+
+    <!-- COOKIES -->
+    <div class="legal-section" id="tab-cookies">
+      <h2>Политика за бисквитки</h2>
+      <div class="divider"></div>
+      <p class="updated">Последна актуализация: юни 2026</p>
+
+      <h3>Какво са бисквитките</h3>
+      <p>Бисквитките (cookies) са малки текстови файлове, съхранявани на вашето устройство при посещение на уебсайта. Те помагат за правилното функциониране на сайта и подобряват потребителското изживяване.</p>
+
+      <h3>Видове бисквитки, които използваме</h3>
+      <ul>
+        <li><strong>Задължителни</strong> — необходими за работата на сайта (количка, сесия). Не могат да бъдат изключени.</li>
+        <li><strong>Функционални</strong> — запомнят предпочитания като език и цветова схема.</li>
+        <li><strong>Аналитични</strong> — Google Analytics, за разбиране на начина, по който се използва сайтът. Могат да бъдат отказани.</li>
+      </ul>
+
+      <h3>Управление на бисквитките</h3>
+      <p>Можете да управлявате или изтриете бисквитките от настройките на браузъра си. Отказването на аналитичните бисквитки не влияе на функционалността на сайта.</p>
+
+      <h3>Трети страни</h3>
+      <p>Използваме Google Analytics за анализ на трафика. Google може да постави собствени бисквитки — вижте <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">политиката за поверителност на Google</a>.</p>
+    </div>
+
+    <!-- DELIVERY -->
+    <div class="legal-section" id="tab-delivery">
+      <h2>Доставка</h2>
+      <div class="divider"></div>
+      <p class="updated">Последна актуализация: юни 2026</p>
+
+      <h3>Начини на доставка</h3>
+      <p>Произведенията на изкуството се доставят с куриерска служба до посочения от купувача адрес на територията на България и Европейския съюз.</p>
+
+      <h3>Опаковане</h3>
+      <p>Всяко произведение се опакова внимателно с подходящи материали, осигуряващи защита при транспорт. Галерията полага максимални усилия за безопасното доставяне на произведението.</p>
+
+      <h3>Срок на доставка</h3>
+      <ul>
+        <li>България: 2–5 работни дни</li>
+        <li>Европейски съюз: 5–10 работни дни</li>
+      </ul>
+      <p>Сроковете са ориентировъчни и зависят от куриерската служба. За по-големи или специфични произведения срокът се уточнява индивидуално.</p>
+
+      <h3>Цена на доставката</h3>
+      <p>Цената на доставката се изчислява при финализиране на поръчката в зависимост от размерите, теглото и дестинацията. За поръчки над определена стойност доставката може да бъде безплатна — проверете актуалните условия на страницата на произведението.</p>
+
+      <h3>Проследяване</h3>
+      <p>При изпращане ще получите имейл с номер за проследяване на пратката.</p>
+
+      <h3>Международна доставка</h3>
+      <p>За доставки извън ЕС, моля, свържете се с нас предварително на <a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a> за индивидуална оферта и условия.</p>
+    </div>
+
+    <!-- RETURNS -->
+    <div class="legal-section" id="tab-returns">
+      <h2>Връщане и рекламации</h2>
+      <div class="divider"></div>
+      <p class="updated">Последна актуализация: юни 2026</p>
+
+      <h3>Право на отказ</h3>
+      <p>Съгласно Закона за защита на потребителите имате право да се откажете от поръчката в срок от <strong>14 дни</strong> от получаване на произведението, без да посочвате причина.</p>
+
+      <h3>Как да върнете произведение</h3>
+      <ul>
+        <li>Свържете се с нас на <a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a> в 14-дневния срок</li>
+        <li>Произведението се връща в оригиналната опаковка и в същото състояние</li>
+        <li>Разходите за връщане са за сметка на купувача, освен ако произведението е повредено при доставка</li>
+      </ul>
+
+      <h3>Рекламации при повреда</h3>
+      <p>При получаване на повредено произведение:</p>
+      <ul>
+        <li>Не подписвайте товарителницата без забележки</li>
+        <li>Документирайте повредата с снимки</li>
+        <li>Уведомете ни в рамките на 24 часа на <a href="mailto:artgserdica@gmail.com">artgserdica@gmail.com</a></li>
+      </ul>
+      <p>Ще организираме замяна или пълно възстановяване на сумата при потвърдена щета по вина на куриера.</p>
+
+      <h3>Възстановяване на суми</h3>
+      <p>При одобрена рекламация или упражнено право на отказ сумата се възстановява по същия начин, по който е извършено плащането, в срок до <strong>14 работни дни</strong> от получаване на произведението обратно.</p>
+
+      <h3>Изключения</h3>
+      <p>Правото на отказ не се прилага за произведения, изработени по индивидуална поръчка или специификации на купувача.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-copy">© 2025 Галерия Сердика. Всички права запазени.</div>
+    <a href="index.html" class="footer-back">← Към началото</a>
+  </footer>
+
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.legal-section');
+
+    function showTab(id) {
+      tabs.forEach(t => t.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+      document.getElementById(`tab-${id}`).classList.add('active');
+      history.replaceState(null, '', `?tab=${id}`);
+    }
+
+    tabs.forEach(btn => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
+
+    // Open correct tab from URL param
+    const param = new URLSearchParams(location.search).get('tab');
+    if (param) showTab(param);
+  </script>
+</body>
+</html>

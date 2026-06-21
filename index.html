@@ -1300,6 +1300,18 @@
     </div>
   </div>
 
+  <!-- COOKIE BANNER -->
+  <div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:#1a1814;border-top:1px solid rgba(255,255,255,.1);padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
+    <p style="font-family:'Montserrat',sans-serif;font-size:.76rem;color:rgba(255,255,255,.65);line-height:1.6;max-width:700px;margin:0">
+      Използваме бисквитки за правилното функциониране на сайта и анализ на посещенията.
+      <a href="legal.html?tab=cookies" style="color:#c8402a;text-decoration:none" target="_blank">Политика за бисквитки</a>
+    </p>
+    <div style="display:flex;gap:.8rem;flex-shrink:0">
+      <button onclick="acceptCookies()" style="background:#c8402a;color:#fff;border:none;padding:.6rem 1.4rem;font-family:'Montserrat',sans-serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;">Приемам</button>
+      <button onclick="declineCookies()" style="background:none;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);padding:.6rem 1.4rem;font-family:'Montserrat',sans-serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;">Само задължителни</button>
+    </div>
+  </div>
+
   <!-- BACK TO TOP -->
   <button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Нагоре">↑</button>
 
@@ -1370,7 +1382,10 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
           Facebook
         </a>
-        <a href="#">Политика за поверителност</a>
+        <a href="legal.html?tab=privacy">Поверителност</a>
+        <a href="legal.html?tab=terms">Общи условия</a>
+        <a href="legal.html?tab=delivery">Доставка</a>
+        <a href="legal.html?tab=returns">Връщане</a>
         <a href="#contact">Контакт</a>
       </div>
     </div>
@@ -1423,6 +1438,21 @@
       localStorage.setItem('lang', lang);
     }
     if (currentLang === 'en') applyLang('en');
+
+    // ── Cookie banner
+    (function() {
+      if (!localStorage.getItem('cookieConsent')) {
+        document.getElementById('cookieBanner').style.display = 'flex';
+      }
+    })();
+    function acceptCookies() {
+      localStorage.setItem('cookieConsent', 'all');
+      document.getElementById('cookieBanner').style.display = 'none';
+    }
+    function declineCookies() {
+      localStorage.setItem('cookieConsent', 'essential');
+      document.getElementById('cookieBanner').style.display = 'none';
+    }
 
     // ── Back to top
     const backTop = document.getElementById('backTop');

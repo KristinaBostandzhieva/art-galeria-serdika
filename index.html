@@ -1301,7 +1301,7 @@
   </div>
 
   <!-- COOKIE BANNER -->
-  <div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:#1a1814;border-top:1px solid rgba(255,255,255,.1);padding:1.2rem 3rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
+  <div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:#1a1814;border-top:1px solid rgba(255,255,255,.1);padding:1.2rem 3rem;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
     <p style="font-family:'Montserrat',sans-serif;font-size:.76rem;color:rgba(255,255,255,.65);line-height:1.6;max-width:700px;margin:0">
       Използваме бисквитки за правилното функциониране на сайта и анализ на посещенията.
       <a href="legal.html?tab=cookies" style="color:#c8402a;text-decoration:none" target="_blank">Политика за бисквитки</a>
@@ -1442,7 +1442,8 @@
     // ── Cookie banner
     (function() {
       if (!localStorage.getItem('cookieConsent')) {
-        document.getElementById('cookieBanner').style.display = 'flex';
+        const b = document.getElementById('cookieBanner');
+        b.style.display = 'flex';
       }
     })();
     function acceptCookies() {
